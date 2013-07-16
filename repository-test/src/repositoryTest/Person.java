@@ -4,6 +4,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 
 import repository.AbstractBuilder;
@@ -13,11 +15,15 @@ import repository.RepositoryUtil;
 public class Person {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator="person_id_seq")
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "person_id_seq")
 	@SequenceGenerator(name = "person_id_seq", sequenceName = "person_id_seq", allocationSize = 1)
 	private Integer id;
 
 	private String name;
+
+	@ManyToOne
+	@JoinColumn(name="address")
+	private Address address;
 
 	public Integer getId() {
 		return id;
@@ -59,6 +65,27 @@ public class Person {
 			return (T) this;
 		}
 
+		@SuppressWarnings("unchecked")
+		public T address(Address address) {
+			obj.address = address;
+			lastProperty = "address";
+			lastValue = address;
+			return (T) this;
+		}
+
+		public Address.Builder<AddressBuilder> address() {
+			Address.Builder<AddressBuilder> result = new AddressBuilder(this);
+			obj.address = result.build();
+			return result;
+		}
+
+		@SuppressWarnings("unchecked")
+		public T address(Object[] exp) {
+			obj.address = (Address) exp[0];
+			add("address", exp);
+			return (T) this;
+		}
+
 		public Person build() {
 			return obj;
 		}
@@ -66,5 +93,23 @@ public class Person {
 
 	public static Builder<Builder<?>> builder() {
 		return new Builder<Builder<?>>();
+	}
+
+	public static class AddressBuilder extends Address.Builder<AddressBuilder> {
+		private Builder<?> b;
+
+		public AddressBuilder(Builder<?> b) {
+			this.b = b;
+		}
+
+		public Builder<?> end() {
+			b.addInnerNonDefaultOperations("address", exp()[1]);
+			return b;
+		}
+
+		protected AddressBuilder add(String prefix, Object[] exp) {
+			b.addInnerNonDefaultOperations("address." + prefix, exp[1]);
+			return this;
+		}
 	}
 }
