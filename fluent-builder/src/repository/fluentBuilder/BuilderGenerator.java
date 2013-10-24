@@ -21,7 +21,8 @@ import org.eclipse.text.edits.TextEdit;
 
 public class BuilderGenerator implements Generator {
 
-	public void generate(ICompilationUnit cu, boolean createBuilderConstructor, boolean formatSource, List<IField> fields) {
+	public void generate(ICompilationUnit cu, boolean createBuilderConstructor, boolean formatSource, 
+			List<IField> fields) {
 		try {
 			IBuffer buffer = cu.getBuffer();
 			StringWriter sw = new StringWriter();
@@ -50,8 +51,8 @@ public class BuilderGenerator implements Generator {
 				buffer.replace(pos, 0, sw.toString());
 				String builderSource = buffer.getContents();
 
-				TextEdit text = ToolFactory.createCodeFormatter(null).format(CodeFormatter.K_COMPILATION_UNIT, builderSource, 0,
-						builderSource.length(), 0, "\n");
+				TextEdit text = ToolFactory.createCodeFormatter(null).format(CodeFormatter.K_COMPILATION_UNIT, 
+					builderSource, 0, builderSource.length(), 0, "\n");
 				// text is null if source cannot be formatted
 				if (text != null) {
 					Document simpleDocument = new Document(builderSource);

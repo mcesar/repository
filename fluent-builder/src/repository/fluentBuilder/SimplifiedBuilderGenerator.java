@@ -14,8 +14,8 @@ import org.eclipse.jdt.core.Signature;
 
 public class SimplifiedBuilderGenerator extends BuilderGenerator {
 
-	private static Collection<String> COMMON_TYPES = Arrays.asList("String", "Date", "Timestamp", "Integer", "Long", "List",
-			"Collection", "Set", "Map", "Double", "Boolean");
+	private static Collection<String> COMMON_TYPES = Arrays.asList("String", "Date", "Timestamp", "Integer", "Long", 
+		"List", "Collection", "Set", "Map", "Double", "Boolean");
 
 	protected void createClassDeclaration(PrintWriter pw) {
 		pw.println("public static class Builder<T extends Builder<?>> extends AbstractBuilder<T>");
@@ -40,7 +40,8 @@ public class SimplifiedBuilderGenerator extends BuilderGenerator {
 				pw.println(String.format("b.addInnerNonDefaultOperations(\"%s\", exp()[1]);", field.getElementName()));
 				pw.println("return b;\n}");
 				pw.println(String.format("protected %sBuilder add(String prefix, Object[] exp) {", s));
-				pw.println(String.format("b.addInnerNonDefaultOperations(\"%s.\" + prefix, exp[1]);", field.getElementName()));
+				pw.println(String.format("b.addInnerNonDefaultOperations(\"%s.\" + prefix, exp[1]);", 
+					field.getElementName()));
 				pw.println("return this;\n}\n}");
 			}
 		}

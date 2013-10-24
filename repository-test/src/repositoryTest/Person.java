@@ -67,4 +67,5 @@ public class Person {
 	public static Builder<Builder<?>> builder() {
 		return new Builder<Builder<?>>();
 	}
+
 }

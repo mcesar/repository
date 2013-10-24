@@ -25,7 +25,6 @@ public class CreateDialog extends AbstractModalDialog {
 
     private Generator generator;
 
-
     public CreateDialog(Shell parent, Generator generator) {
         super(parent);
         this.generator = generator;

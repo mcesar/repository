@@ -15,7 +15,6 @@ import org.eclipse.ui.handlers.HandlerUtil;
 
 public class FluentBuilderHandler extends AbstractHandler {
 
-
 	@Override
 	public Object execute(ExecutionEvent event) throws ExecutionException {
 		IWorkingCopyManager manager = JavaUI.getWorkingCopyManager();
@@ -41,4 +40,5 @@ public class FluentBuilderHandler extends AbstractHandler {
 		}
 		return null;
 	}
+
 }
