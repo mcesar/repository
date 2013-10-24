@@ -318,6 +318,10 @@ public class JpaRepository implements Repository, NativeRepository, Repository.T
 		return query;
 	}
 
+	public String queryString(Object[] exp) throws Exception {
+		return queryString(exp, where(exp));
+	}
+
 	protected String queryString(Object[] exp, String w) throws Exception {
 		String collections = collections(exp, "t.");
 		String distinct = collections.isEmpty() ? "" : "distinct ";
