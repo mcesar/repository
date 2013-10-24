@@ -27,7 +27,7 @@
                visible="true">
         	</separator>
         	<command
-               commandId="br.gov.planejamento.sof.siop.fluentBuilder"
+               commandId="repository.fluentBuilder"
                style="push">
 				<visibleWhen>
 					<or>
