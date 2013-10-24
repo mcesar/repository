@@ -33,4 +33,8 @@ public interface Repository {
 		public void flushAndClear();
 	}
 
+	public interface BatchProcessor extends Repository {
+		public void submit();
+	}
+
 }
