@@ -21,10 +21,11 @@ public class Person {
 
 	private String name;
 
+	/*
 	@ManyToOne
 	@JoinColumn(name="address")
 	private Address address;
-
+	*/
 	public Integer getId() {
 		return id;
 	}
@@ -65,6 +66,7 @@ public class Person {
 			return (T) this;
 		}
 
+		/*
 		@SuppressWarnings("unchecked")
 		public T address(Address address) {
 			obj.address = address;
@@ -85,6 +87,7 @@ public class Person {
 			add("address", exp);
 			return (T) this;
 		}
+		*/
 
 		public Person build() {
 			return obj;
@@ -94,7 +97,7 @@ public class Person {
 	public static Builder<Builder<?>> builder() {
 		return new Builder<Builder<?>>();
 	}
-
+/*
 	public static class AddressBuilder extends Address.Builder<AddressBuilder> {
 		private Builder<?> b;
 
@@ -112,5 +115,5 @@ public class Person {
 			return this;
 		}
 	}
-
+*/
 }

@@ -5,7 +5,10 @@
 *.war
 *.ear
 */bin/*
+*/target/*
 
 .DS_Store
 .metadata
 RemoteSystemsTempFiles
+*.sublime-project
+*.sublime-workspace

@@ -24,6 +24,7 @@ public class Main {
 	private static void testRepository(Repository repository) throws Exception {
 		
 		repository.removeAll(Person.builder().build());
+		/*
 		repository.removeAll(Address.builder().build());
 		
 		Address address = repository.add(Address.builder().line1("w3").build());
@@ -35,20 +36,23 @@ public class Main {
 			System.out.println("Line1: " + a.getLine1());
 		}
 		System.out.println("");
+		*/
 		
-		Person person = repository.add(Person.builder().name("abc").address(address).build());
+		Person person = repository.add(Person.builder().name("abc")/*.address(address)*/.build());
 		System.out.println("Person " + person.getId() + " added\n");
 		
 		Collection<Person> persons = repository.matching(Person.builder().name("a").startsWith().exp());
-		System.out.println("Address " + address.getId() + " recovered:");
+		//System.out.println("Address " + address.getId() + " recovered:");
 		for (Person p : persons) {
 			System.out.println("Name: " + p.getName());
 		}
 		System.out.println("");
+		/*
 		persons = repository.matching(Person.builder().address().line1("w").startsWith().end().exp());
 		for (Person p : persons) {
 			System.out.println("Name: " + p.getName());
 		}
 		System.out.println("");
+		*/
 	}
 }
