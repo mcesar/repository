@@ -74,6 +74,11 @@
       <artifactId>filebuffers</artifactId>
       <version>3.3.0-v20070606-0010</version>
     </dependency>    
+    <dependency>
+      <groupId>org.voltdb</groupId>
+      <artifactId>VoltDBClient</artifactId>
+      <version>3.6</version>
+    </dependency>    
   </dependencies>
 
 </project>
