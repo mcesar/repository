@@ -16,3 +16,4 @@ RemoteSystemsTempFiles
 volt.log
 debugoutput
 statement-plans
+voltdb-symlink

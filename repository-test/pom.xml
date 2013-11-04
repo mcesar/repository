@@ -39,6 +39,32 @@
             </dependency>
           </dependencies>
         </plugin>
+
+        <plugin>
+          <groupId>org.codehaus.mojo</groupId>
+          <artifactId>exec-maven-plugin</artifactId>
+          <version>1.2.1</version>
+          <executions>
+            <execution>
+              <phase>package</phase>
+              <goals>
+                <goal>exec</goal>
+              </goals>
+              <configuration>
+                <executable>${basedir}/voltdb-symlink/bin/voltdb</executable>
+                <workingDirectory>${project.build.outputDirectory}</workingDirectory>
+                <arguments>
+                  <argument>compile</argument>
+                  <argument>--classpath=${project.build.outputDirectory}</argument>
+                  <argument>-o</argument>
+                  <argument>${project.build.directory}/${project.build.finalName}-catalog.jar</argument>
+                  <argument>${project.build.sourceDirectory}/repositoryTest/VoltRepositoryTest.sql</argument>
+                </arguments>
+              </configuration>
+            </execution>
+          </executions>
+  </plugin>
+
     </plugins>
   </build>
 
