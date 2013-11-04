@@ -53,7 +53,7 @@ public class VoltMojo extends AbstractMojo {
             }
         }
         try {
-            vr.parseFilesInDir(sourceDirectory.getAbsolutePath());
+            vr.parseFilesInDir(sourceDirectory);
         } catch (IOException e) {
             throw new MojoExecutionException("Erro gerando stored procedures voltdb", e);
         }

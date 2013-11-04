@@ -13,20 +13,21 @@ import org.eclipse.jface.text.*;
 public class VoltRepositoryTranslator {
 
 	public void parseFilesInDir(String path) throws IOException{
-		File root = new File(path);
+		parseFilesInDir(new File(path));
+	}
+
+	public void parseFilesInDir(File root) throws IOException{
 		File[] files = root.listFiles();
-		String filePath = null;
 		 for (File f : files) {
-			 filePath = f.getAbsolutePath();
-			 if (f.isFile() && filePath.endsWith(".java")) {
-				 parse(filePath, readFileToString(filePath));
+			 if (f.isFile() && f.getAbsolutePath().endsWith(".java")) {
+				 parse(f);
 			 }
 		 }
 	}
 
-	private String readFileToString(String filePath) throws IOException {
+	private String readFileToString(File file) throws IOException {
 		StringBuilder fileData = new StringBuilder(1000);
-		BufferedReader reader = new BufferedReader(new FileReader(filePath));
+		BufferedReader reader = new BufferedReader(new FileReader(file));
  		try {
 			char[] buf = new char[10];
 			int numRead = 0;
@@ -41,7 +42,8 @@ public class VoltRepositoryTranslator {
 		return fileData.toString();
 	}
 
-	private void parse(String filePath, String str) {
+	private void parse(File file) throws IOException {
+		String str = readFileToString(file);
 		ASTParser parser = ASTParser.newParser(AST.JLS3);
 		Document document = new Document(str);
 		parser.setSource(document.get().toCharArray());
@@ -147,7 +149,7 @@ public class VoltRepositoryTranslator {
 				// Write down the modifications
 				TextEdit edits = rewriter.rewriteAST(document, null);
 				edits.apply(document);
-		 		BufferedWriter out = new BufferedWriter(new FileWriter(filePath.replace(".java", "_.java")));
+		 		BufferedWriter out = new BufferedWriter(new FileWriter(file.getAbsolutePath().replace(".java", "_.java")));
 		        try {
 		            out.write(document.get());
 		            out.flush();
@@ -319,7 +321,13 @@ public class VoltRepositoryTranslator {
 		}
 		if (operations != null && !operations.isEmpty()) map.put(lastProperty, operations);
 		try {
-			return new JpaRepository().queryString(exp);
+			SqlRepository repository = new SqlRepository();
+			repository.setUsingQuestionMarks(true);
+			if ("matching".equals(methodName)) {
+				return repository.queryString(exp);
+			} else {
+				return repository.insertString(exp);
+			}
 		} catch (Exception ex) {
 			throw new RuntimeException(ex);
 		}

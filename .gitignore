@@ -13,3 +13,6 @@ RemoteSystemsTempFiles
 *.sublime-project
 *.sublime-workspace
 *_.java
+volt.log
+debugoutput
+statement-plans

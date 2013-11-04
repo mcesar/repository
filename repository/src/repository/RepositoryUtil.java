@@ -32,6 +32,16 @@ public class RepositoryUtil {
 		return idFieldFromClass(o.getClass());
 	}
 
+	public static <T> Field fieldWithName(T o, String name) {
+		for (Field f : o.getClass().getDeclaredFields()) {
+			if (f.getName().equals(name)) {
+				f.setAccessible(true);
+				return f;
+			}
+		}
+		return null;
+	}
+
 	public static <T> Integer idValue(T o) {
 		try {
 			Field idField = idField(o);
