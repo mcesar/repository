@@ -17,12 +17,27 @@
     <testSourceDirectory>tests</testSourceDirectory>
     <plugins>
         <plugin>
-          <groupId>org.codehaus.mojo</groupId>
-          <artifactId>exec-maven-plugin</artifactId>
-          <version>1.2.1</version>
-          <configuration>
-            <mainClass>repositoryTest.VoltRepositoryTranslatorTest</mainClass>
-          </configuration>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>voltdb-maven-plugin</artifactId>
+          <version>1.0-SNAPSHOT</version>
+          <executions>
+            <execution>
+              <configuration>
+                <sourceDirectory>src/repositoryTest</sourceDirectory>
+                <outputDirectory>src/repositoryTest</outputDirectory>
+              </configuration>
+              <goals>
+                <goal>generate-sources</goal>
+              </goals>
+            </execution>
+          </executions>
+          <dependencies>
+            <dependency>
+              <groupId>repository</groupId>
+              <artifactId>repository-test</artifactId>
+              <version>${project.version}</version>
+            </dependency>
+          </dependencies>
         </plugin>
     </plugins>
   </build>

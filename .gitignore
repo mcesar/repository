@@ -12,3 +12,4 @@
 RemoteSystemsTempFiles
 *.sublime-project
 *.sublime-workspace
+*_.java

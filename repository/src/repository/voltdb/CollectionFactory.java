@@ -1,4 +1,4 @@
-package repository;
+package repository.voltdb;
 
 import java.util.*;
 import org.voltdb.*;

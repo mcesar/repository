@@ -75,13 +75,15 @@ public class VoltRepositoryTranslator {
 				SimpleName newName = rast.newSimpleName(td.getName().getIdentifier() + "_");
 				rewriter.replace(td.getName(), newName, null);
 				// Add import
+				ListRewrite lrw = rewriter.getListRewrite(cu, CompilationUnit.IMPORTS_PROPERTY);
 				ImportDeclaration id = rast.newImportDeclaration();
 				id.setName(rast.newName(new String[] { "org", "voltdb" }));
 				id.setOnDemand(true);
+				lrw.insertLast(id, null);
 				id = rast.newImportDeclaration();
 				id.setName(rast.newName(new String[] { "repository", "voltdb", "CollectionFactory" }));
 				id.setOnDemand(true);
-				ListRewrite lrw = rewriter.getListRewrite(cu, CompilationUnit.IMPORTS_PROPERTY);
+				id.setStatic(true);
 				lrw.insertLast(id, null);
 				// Set the superclass
 				rewriter.set(td, TypeDeclaration.SUPERCLASS_TYPE_PROPERTY, rast.newSimpleName("VoltProcedure"), null);
@@ -215,24 +217,24 @@ public class VoltRepositoryTranslator {
 							MethodInvocation nmi = newVoltQueueSQLInvocation(rewriter, index[0], arguments);
 							if (!"Repository.BatchProcessor".equals(type)) {
 								ListRewrite listRewrite = rewriter.getListRewrite(nearestParentBlock(mi), Block.STATEMENTS_PROPERTY);
-								listRewrite.insertAfter(newVoltInvocation("voltExecuteSQL", rewriter), nearestStatement(mi), null);
+								listRewrite.insertAfter(newVoltInvocation("voltExecuteSQL", rewriter.getAST()), nearestStatement(mi), null);
 							}
 							rewriter.replace(mi, nmi, null);
 						} else if ("matching".equals(methodName)) {
 							MethodInvocation nmi = newVoltQueueSQLInvocation(rewriter, index[0], arguments);
 							ListRewrite listRewrite = rewriter.getListRewrite(nearestParentBlock(mi), Block.STATEMENTS_PROPERTY);
-							listRewrite.insertBefore(nmi, nearestStatement(mi), null);
+							listRewrite.insertBefore(rewriter.getAST().newExpressionStatement(nmi), nearestStatement(mi), null);
 							if ("Repository.BatchProcessor".equals(type)) {
 								rewriter.remove(mi, null);
 							} else {
-								MethodInvocation newCollectionMI = newVoltInvocation("newVoltCollection", rewriter);
-								newCollectionMI.arguments().add(newVoltInvocation("voltExecuteSQL", rewriter));
+								MethodInvocation newCollectionMI = newVoltInvocation("newVoltCollection", rewriter.getAST());
+								newCollectionMI.arguments().add(newVoltInvocation("voltExecuteSQL", rewriter.getAST()));
 								rewriter.replace(mi, newCollectionMI, null);								
 							}
 						}
 						index[0]++;
 					} else if ("submit".equals(methodName)) {
-						rewriter.replace(mi, newVoltInvocation("voltExecuteSQL", rewriter), null);
+						rewriter.replace(mi, newVoltInvocation("voltExecuteSQL", rewriter.getAST()), null);
 					}
 				}
 				return true;
@@ -241,7 +243,7 @@ public class VoltRepositoryTranslator {
 	}
 
 	private MethodInvocation newVoltQueueSQLInvocation(ASTRewrite rewriter, int index, Collection<Object> arguments) {
-		MethodInvocation result = newVoltInvocation("voltQueueSQL", rewriter);
+		MethodInvocation result = newVoltInvocation("voltQueueSQL", rewriter.getAST());
 		ListRewrite listRewrite = rewriter.getListRewrite(result, MethodInvocation.ARGUMENTS_PROPERTY);
 		listRewrite.insertLast(rewriter.getAST().newSimpleName("sql" + index), null);
 		for (Object o : arguments) {
@@ -250,9 +252,9 @@ public class VoltRepositoryTranslator {
 		return result;
 	}
 
-	private MethodInvocation newVoltInvocation(String name, ASTRewrite rewriter) {
-		MethodInvocation result = rewriter.getAST().newMethodInvocation();
-		result.setName(rewriter.getAST().newSimpleName(name));
+	private MethodInvocation newVoltInvocation(String name, AST ast) {
+		MethodInvocation result = ast.newMethodInvocation();
+		result.setName(ast.newSimpleName(name));
 		return result;
 	}
 
@@ -335,7 +337,7 @@ public class VoltRepositoryTranslator {
 			} catch (Exception ex) {
 			}
 		}
-		return null;
+		throw new RuntimeException(String.format("A classe %s não foi encontrada em nenhum dos pacotes: %s", className, packages));
 	}
 
 	private Object createObject(String qualifiedClassName) {
