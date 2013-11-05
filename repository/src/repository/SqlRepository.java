@@ -165,7 +165,14 @@ public class SqlRepository extends AbstractSqlRepository implements Repository {
 		String select = select(exp);
 		String fields;
 		if (select.isEmpty()) {
-			fields = "t.*";
+			StringBuilder sbd = new StringBuilder();
+			StringBuilder sba = new StringBuilder();
+			distinctsAndAggregates(exp, sbd, sba);
+			if (sbd.length() == 0 && sba.length() == 0) {
+				fields = "t.*";
+			} else {
+				fields = sbd.toString() + sba.toString();
+			}
 		} else {
 			fields = fieldsString(exp[0].getClass(), "t");
 		}

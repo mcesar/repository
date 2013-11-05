@@ -293,6 +293,44 @@ public abstract class AbstractSqlRepository {
 		return true;
 	}
 
+	protected void distinctsAndAggregates(Object[] exp, StringBuilder distinctSb, StringBuilder aggregatesSb) {
+		StringBuilder aggregatesKeySb = new StringBuilder();
+		Map<String, Collection<Object[]>> nonDefaultOperations = nonDefaultOperations(exp);
+		for (Entry<String, Collection<Object[]>> e : nonDefaultOperations.entrySet()) {
+			for (Object[] operation : e.getValue()) {
+				if ("distinct".equals(operation[0])) {
+					if (distinctSb.length() > 0)
+						distinctSb.append(", ");
+					distinctSb.append("t.");
+					distinctSb.append(e.getKey());
+				} else if ("groupBy".equals(operation[0])) {
+					if (aggregatesKeySb.length() > 0)
+						aggregatesKeySb.append(", ");
+					aggregatesKeySb.append("t.");
+					aggregatesKeySb.append(e.getKey());
+				} else if ("sum".equals(operation[0]) || "count".equals(operation[0]) || "max".equals(operation[0])) {
+					if (aggregatesSb.length() > 0)
+						aggregatesSb.append(", ");
+					aggregatesSb.append(operation[0]);
+					aggregatesSb.append("(");
+					aggregatesSb.append("t.");
+					aggregatesSb.append(e.getKey());
+					aggregatesSb.append(")");
+				}
+			}
+		}
+		if (aggregatesKeySb.length() > 0) {
+			if (aggregatesSb.length() > 0)
+				aggregatesSb.insert(0, ", ");
+			aggregatesSb.insert(0, aggregatesKeySb);
+		}
+		if (distinctSb.length() > 0) {
+			distinctSb.insert(0, "distinct ");
+			if (aggregatesSb.length() > 0)
+				aggregatesSb.insert(0, ", ");
+		}
+	}
+
 	private static final long serialVersionUID = 1L;
 
 }
