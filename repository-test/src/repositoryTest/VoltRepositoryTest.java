@@ -14,9 +14,10 @@ public class VoltRepositoryTest implements RunnableWithResult {
 	      values.add(i);
     	}
 
-	    long count = (Long)
-    	  ((Object[]) repository.matching(C.builder().id(null).count().exp())
-      		.iterator().next())[0];
+    	Collection<Object[]> c = repository.matching(C.builder().id(null).count().exp());
+    	Number n = (Number) c.iterator().next()[0];
+
+	    long count = n == null || n == 0 ? 0 : n.longValue() / 6000;
 
 	    batch.add(C.builder()
 	      .id(count + 1)
@@ -24,7 +25,7 @@ public class VoltRepositoryTest implements RunnableWithResult {
 
 	    for (int i = 0; i < 6000; i++) {
 	      batch.add(C.builder()
-	        .id((count + 1) * 10000 + i)
+	        .id((count + 1) * 100000 + i)
 	        .build());
 	    }
 	    batch.submit();
