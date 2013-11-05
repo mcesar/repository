@@ -13,7 +13,9 @@ RemoteSystemsTempFiles
 *.sublime-project
 *.sublime-workspace
 *_.java
-volt.log
+volt.log*
 debugoutput
 statement-plans
 voltdb-symlink
+*voltdb_crash*
+*voltdbroot*

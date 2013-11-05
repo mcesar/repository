@@ -55,7 +55,7 @@
                 <workingDirectory>${project.build.outputDirectory}</workingDirectory>
                 <arguments>
                   <argument>compile</argument>
-                  <argument>--classpath=${project.build.outputDirectory}</argument>
+                  <argument>--classpath=${project.build.outputDirectory}:${basedir}/../repository/target/classes</argument>
                   <argument>-o</argument>
                   <argument>${project.build.directory}/${project.build.finalName}-catalog.jar</argument>
                   <argument>${project.build.sourceDirectory}/repositoryTest/VoltRepositoryTest.sql</argument>

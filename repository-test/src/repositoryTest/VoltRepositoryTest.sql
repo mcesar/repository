@@ -4,3 +4,5 @@ CREATE TABLE C (
 );
 
 CREATE PROCEDURE FROM CLASS repositoryTest.VoltRepositoryTest_;
+
+IMPORT CLASS repository.voltdb.*;
