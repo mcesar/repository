@@ -7,6 +7,8 @@ import static org.junit.Assert.*;
 
 import org.voltdb.*;
 
+import repository.voltdb.*;
+
 public class CollectionFactoryTest {
 
 	private Collection<Object[]> col1;

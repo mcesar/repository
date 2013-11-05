@@ -37,6 +37,7 @@ public class CollectionFactory {
 		}
 
 		public Object[] next() {
+			if (!hasNext()) throw new RuntimeException("Não há mais elementos na coleção");
 			table.advanceRow();
 			Object[] result = new Object[table.getColumnCount()];
 			for (int i = 0; i < table.getColumnCount(); i++) {
