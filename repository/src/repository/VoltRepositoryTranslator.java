@@ -274,7 +274,7 @@ public class VoltRepositoryTranslator {
 
 	private String builderToSql(Expression e, Collection<String> packages, String methodName, final Collection<Object> arguments) {
 		final String[] ignore = { "build", "builder", "exp" };
-		final String[] modifiers = { "count" };
+		final String[] modifiers = { "count", "groupBy", "max", "sum" };
 		final Stack<String> stack = new Stack<String>();
 		final String[] className = { null };
 		e.accept(new ASTVisitor() {
