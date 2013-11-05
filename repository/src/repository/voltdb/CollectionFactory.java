@@ -42,6 +42,7 @@ public class CollectionFactory {
 			Object[] result = new Object[table.getColumnCount()];
 			for (int i = 0; i < table.getColumnCount(); i++) {
 				result[i] = table.get(i, table.getColumnType(i));
+				if (table.wasNull()) result[i] = null;
 			}
 			return result;
 		}
